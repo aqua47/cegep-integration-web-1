@@ -1,46 +1,72 @@
 version: 2.1
 
 jobs:
-  build:
-    parameters:
-      name:
-        type: string
+  checkout_and_unit_test:
     machine: true
     steps:
-      - run: echo "Exécution de << parameters.name >>"
+      - run: echo "checkout_and_unit_test"
+
+  deploy_backend:
+    machine: true
+    steps:
+      - run: echo "deploy_backend"
+
+  integration_tests_backend:
+    machine: true
+    steps:
+      - run: echo "integration_tests_backend"
+
+  deploy_staging:
+    machine: true
+    steps:
+      - run: echo "deploy_staging"
+
+  acceptance_tests_1:
+    machine: true
+    steps:
+      - run: echo "acceptance_tests_1"
+
+  acceptance_tests_2:
+    machine: true
+    steps:
+      - run: echo "acceptance_tests_2"
+
+  acceptance_tests_3:
+    machine: true
+    steps:
+      - run: echo "acceptance_tests_3"
+
+  acceptance_tests_4:
+    machine: true
+    steps:
+      - run: echo "acceptance_tests_4"
+
+  deploy_production:
+    machine: true
+    steps:
+      - run: echo "deploy_production"
 
 workflows:
-  delivery_pipeline:
+  mon_workflow:
     jobs:
-      - build:
-          name: checkout_and_unit_test
-      - build:
-          name: deploy_backend
+      - checkout_and_unit_test
+      - deploy_backend:
           requires: [checkout_and_unit_test]
-      - build:
-          name: integration_tests_backend
+      - integration_tests_backend:
           requires: [deploy_backend]
-      - build:
-          name: deploy_staging
+      - deploy_staging:
           requires: [integration_tests_backend]
-      
 
-      - build:
-          name: acceptance_tests_1
+      - acceptance_tests_1:
           requires: [deploy_staging]
-      - build:
-          name: acceptance_tests_2
+      - acceptance_tests_2:
           requires: [deploy_staging]
-      - build:
-          name: acceptance_tests_3
+      - acceptance_tests_3:
           requires: [deploy_staging]
-      - build:
-          name: acceptance_tests_4
+      - acceptance_tests_4:
           requires: [deploy_staging]
-      
 
-      - build:
-          name: deploy_production
+      - deploy_production:
           requires:
             - acceptance_tests_1
             - acceptance_tests_2
